@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
+use Carbon\Carbon;
+class AuthServiceProvider extends ServiceProvider
+{
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+    ];
+
+    /**
+     * Register any authentication / authorization services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->registerPolicies();
+        Passport::routes();
+        #Passport::tokensExpireIn(now()->addMillisecond(PERSONAL_ACCESS_TOKEN_EXPIRY_TIME));
+        #Passport::refreshTokensExpireIn(now()->addMillisecond(PERSONAL_ACCESS_TOKEN_REFRESH_TIME));
+        #Passport::personalAccessTokensExpireIn(now()->addMillisecond(PERSONAL_ACCESS_TOKEN_EXPIRY_TIME));
+
+        Passport::tokensExpireIn(now()->addDays(15));
+        Passport::refreshTokensExpireIn(now()->addDays(30));
+        //
+    }
+}
